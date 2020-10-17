@@ -39,3 +39,4 @@ docker-compose.yml
 
 ### Develop properties ###
 /src/main/resources/application-develop.properties
+/runtime/
