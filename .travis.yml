@@ -13,4 +13,4 @@ android:
     
 before_script: cd backend
 script:
-  - chmod +x ./gradlew build
+  - chmod +x ./gradle build
