@@ -1,3 +1,4 @@
+language: java
 android:
   components:
     # Update Android SDK Tools
@@ -11,4 +12,4 @@ android:
     - extra-android-m2repository
 
 script:
-  - chmod +x./gradlew build
+  - chmod +x ./gradlew build
