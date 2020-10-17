@@ -1,9 +1,14 @@
-language: java
-install: skip
+android:
+  components:
+    # Update Android SDK Tools
+    - tools
 
-os: linux
-dist: trusty
-jdk: oraclejdk8
+    - build-tools-23.0.1
+    - android-23
+
+    # Support library
+    - extra-android-support
+    - extra-android-m2repository
 
 script:
-  - ./gradlew build --scan -s
+  - chmod +x./gradlew build
