@@ -1,7 +1,7 @@
 sudo: false
 language: android
 jdk:
-  - oraclejdk1
+  - oraclejdk11
 
 before_install:
   - cd backend
