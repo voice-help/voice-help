@@ -4,8 +4,7 @@ jdk:
   - oraclejdk11
 
 before_install:
-  - cd backend
-  - chmod +x gradlew
+  - chmod +x backend/gradlew
 before_script: cd backend
 script:
 - "/.gradlew clean build"
