@@ -1,21 +1,19 @@
-name: Pull Request Lint
+name: PR Lint
 
 on:
   pull_request:
-    types: ['opened', 'edited', 'reopened', 'synchronize']
+    types: [opened, edited, reopened]
 
 jobs:
-  title:
-    name: ticket check
+  pr-lint:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check for ticket
-        uses: neofinancial/ticket-check-action@v1
+      - uses: morrisoncole/pr-lint-action@v1.3.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          ticketPrefix: '#'
-          titleRegex: '^#(\d+)'
-          branchRegex: '^(\d+)'
-          bodyRegex: '#(\d+)'
-          bodyURLRegex: 'http(s?):\/\/(github.com)(\/:voice-help)(\/:voice-help)(\/issues)\/\d+'
+          title-regex: "#[eE][xX]-[0-9]+"
+          on-failed-regex-fail-action: false
+          on-failed-regex-request-changes: false
+          on-failed-regex-create-review: true
+          on-failed-regex-comment:
+            "This is just an example. Failed regex: `%regex%`!"
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
