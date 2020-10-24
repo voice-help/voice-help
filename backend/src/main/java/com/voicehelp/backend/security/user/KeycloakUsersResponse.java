@@ -1,6 +1,6 @@
 package com.voicehelp.backend.security.user;
 
-import com.voicehelp.backend.security.token.UserDTO;
+import com.voicehelp.backend.security.user.model.UserDTO;
 import lombok.Data;
 
 import java.util.ArrayList;
