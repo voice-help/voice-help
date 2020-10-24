@@ -1,6 +1,8 @@
 package com.voicehelp.backend.security.user;
 
-import com.voicehelp.backend.security.token.UserDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.voicehelp.backend.security.common.controller.RequestUtil;
+import com.voicehelp.backend.security.user.model.UserDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +18,7 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
-        var createdUserDTO = userService.createUser(userDTO);
-        return new ResponseEntity<>(createdUserDTO, HttpStatus.OK);
+    public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) throws JsonProcessingException {
+        return RequestUtil.handleRequestException(() -> new ResponseEntity<>(userService.createUser(userDTO), HttpStatus.OK));
     }
 }
