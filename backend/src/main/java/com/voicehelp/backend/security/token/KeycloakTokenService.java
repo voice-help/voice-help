@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.voicehelp.backend.security.KeycloakProperties;
 import com.voicehelp.backend.security.KeycloakTokenResponse;
 import com.voicehelp.backend.security.SecurityProperties;
+import com.voicehelp.backend.security.token.model.KeycloakTokenRefreshDto;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -23,9 +24,9 @@ public class KeycloakTokenService {
         this.securityProperties = securityProperties;
     }
 
-    public KeycloakTokenResponse refreshToken(String refreshToken) throws JsonProcessingException {
+    public KeycloakTokenResponse refreshToken(KeycloakTokenRefreshDto refreshToken) throws JsonProcessingException {
         var restTemplate = new RestTemplate();
-        var request = generateTokenRefreshRequest(refreshToken);
+        var request = generateTokenRefreshRequest(refreshToken.getRefreshToken());
         var response = restTemplate.postForEntity(securityProperties.getTokenUrl(), request, String.class);
         KeycloakTokenResponse tokenResponse = getTokenResponse(response.getBody());
         return tokenResponse;

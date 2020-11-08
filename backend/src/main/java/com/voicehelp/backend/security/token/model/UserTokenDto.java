@@ -9,4 +9,13 @@ public class UserTokenDto {
     private String userName;
     @JsonProperty("password")
     private String password;
+
+    public UserTokenDto(){
+
+    }
+
+    public UserTokenDto(String userName, String password) {
+        this.userName = userName;
+        this.password = password;
+    }
 }
