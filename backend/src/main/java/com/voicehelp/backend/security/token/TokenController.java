@@ -7,7 +7,6 @@ import com.voicehelp.backend.security.token.model.UserTokenDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.security.RolesAllowed;
 
 @RestController
@@ -29,7 +28,6 @@ public class TokenController {
 
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
     public ResponseEntity<?> refreshToken(@RequestBody KeycloakTokenRefreshDto refreshToken) throws JsonProcessingException {
-
         return RequestUtil.handleRequestException(() ->
                 new ResponseEntity<>(keycloakTokenService.refreshToken(refreshToken), HttpStatus.ACCEPTED));
     }
@@ -39,6 +37,5 @@ public class TokenController {
     public ResponseEntity<?> validateToken() {
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
 }
