@@ -4,6 +4,7 @@ import 'package:voicehelp/component/passwordInput.dart';
 import 'package:voicehelp/component/securityButton.dart';
 import 'package:voicehelp/component/securityInput.dart';
 import 'package:voicehelp/component/securityText.dart';
+import 'package:voicehelp/screen/app_screen.dart';
 import 'package:voicehelp/screen/login.screen.dart';
 import 'package:voicehelp/validator/confirm_password_validator.dart';
 import 'package:voicehelp/validator/password_validator.dart';
@@ -30,14 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Colors.blueGrey, Colors.lightBlueAccent],
-          ),
-        ),
+      body: AppScreenContainer(
         child: Form(
           key: _formKey,
           child: ListView(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:voicehelp/screen/app_screen.dart';
 import 'package:voicehelp/screen/register.screen.dart';
 import 'package:voicehelp/component/passwordInput.dart';
 import 'package:voicehelp/component/securityButton.dart';
@@ -21,14 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Colors.blueGrey, Colors.lightBlueAccent],
-          ),
-        ),
+      body: AppScreenContainer(
         child: ListView(
           children: <Widget>[
             SecurityText('Sign In'),
@@ -65,7 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var loginResponse =
         await userService.signIn(username: username, password: password);
     if (loginResponse.successfully) {
-        Navigator.pushNamedAndRemoveUntil(context, routes.HOME, (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, routes.MAIN, (route) => false);
     }
   }
 }
