@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:voicehelp/screen/home.screen.dart';
+import 'package:voicehelp/screen/main.screen.dart';
 import 'package:voicehelp/screen/login.screen.dart';
 import 'package:voicehelp/screen/register.screen.dart';
 import 'package:voicehelp/service/user_service.dart' as userService;
@@ -13,7 +13,7 @@ void main() async {
       routes.ROOT: (context) => MyApp(),
       routes.SIGN_IN: (context) => LoginScreen(),
       routes.SIGN_UP : (context) => RegisterScreen(),
-      routes.HOME : (context) => HomeScreen(),
+      routes.MAIN : (context) => MainScreen(),
     },
 
   ));
@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
           future: userService.isSignIn(),
           builder: (context, snapShot) {
             if (snapShot.data == true) {
-              return HomeScreen();
+              return MainScreen();
             }
             return LoginScreen(); // finally here should be some loading screen
           },
