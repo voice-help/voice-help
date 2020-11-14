@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:voicehelp/component/destination_view.dart';
+import 'package:voicehelp/view/destination_view.dart';
 
 class MainScreen extends StatefulWidget {
   @override
