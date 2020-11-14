@@ -4,19 +4,10 @@ import 'package:voicehelp/screen/login.screen.dart';
 import 'package:voicehelp/screen/register.screen.dart';
 import 'package:voicehelp/service/user_service.dart' as userService;
 import 'package:voicehelp/common/routes.dart' as routes;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MaterialApp(
-    title: 'Voice help',
-    initialRoute: '/',
-    routes: {
-      routes.ROOT: (context) => MyApp(),
-      routes.SIGN_IN: (context) => LoginScreen(),
-      routes.SIGN_UP : (context) => RegisterScreen(),
-      routes.MAIN : (context) => MainScreen(),
-    },
-
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -28,6 +19,12 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        title: 'Voice help',
+        routes: {
+          routes.SIGN_IN: (context) => LoginScreen(),
+          routes.SIGN_UP: (context) => RegisterScreen(),
+          routes.MAIN: (context) => MainScreen(),
+        },
         home: FutureBuilder(
           future: userService.isSignIn(),
           builder: (context, snapShot) {
