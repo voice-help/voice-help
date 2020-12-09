@@ -1,9 +1,12 @@
 {
-  "tokenUrl": "http://10.0.2.2:9090/api/v1/token/",
-  "validateAccessTokenUrl": "http://10.0.2.2:9090/api/v1/token/validate",
-  "refreshAccessTokenUrl" : "http://10.0.2.2:9090/api/v1/token/refresh",
+  "tokenUrl": "http://192.168.0.178:9090/api/v1/token/",
+  "validateAccessTokenUrl": "http://192.168.0.178:9090/api/v1/token/validate",
+  "refreshAccessTokenUrl" : "http://192.168.0.178:9090/api/v1/token/refresh",
   "accessTokenKey": "access_token",
   "refreshTokenKey": "refresh_token",
 
-  "userUrl": "http://10.0.2.2:9090/api/v1/user"
+  "userUrl": "http://192.168.0.178:9090/api/v1/user",
+
+  "recordUploadUrl": "http://192.168.0.178:9090/api/v1/record",
+  "allRecordUrl" : "http://192.168.0.178:9090/api/v1/record"
 }

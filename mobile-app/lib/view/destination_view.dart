@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:voicehelp/screen/app_screen.dart';
+import 'package:voicehelp/view/home_view.dart';
 import 'package:voicehelp/view/record_view.dart';
 
 final List<Destination> destinations = [
-  Destination('Home', Icons.home, AppScreenContainer(child: Text('home'))),
+  Destination('Home', Icons.home, HomeView()),
   Destination('Record', Icons.keyboard_voice, RecordView()),
   Destination('User', Icons.person, Text('user'))
 ];
