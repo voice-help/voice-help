@@ -17,6 +17,9 @@ Future<Response> signIn({String username, String password}) async {
         });
     return Response(successfully: true);
   }
+  if(tokenResponse.connectionException){
+    return Response(successfully: false, failureMessage: 'Cannot sign in - try again later');
+  }
   if (tokenResponse.status == 401) {
     return Response(
         successfully: false, failureMessage: 'Wrong username or password');
@@ -42,6 +45,9 @@ Future<bool> isSignIn() async {
     return true;
   }
   var refreshTokenResponse = await refreshAccessToken(config: appConfig, refreshToken: prefernces.get(appConfig.accessTokenKey));
+  if(refreshTokenResponse.connectionException){
+    return false;
+  }
   if (refreshTokenResponse.status == 200) {
     SharedPreferences.getInstance().then((instance) => {
           instance.setString(

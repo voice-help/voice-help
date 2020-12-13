@@ -5,15 +5,20 @@ import 'package:voicehelp/config.dart';
 
 Future<TokenResponse> fetchToken(
     {AppConfig config, TokenRequest request}) async {
-  return http
-      .post(config.tokenUrl,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
-      },
-      body: TokenRequest.toJson(request))
-      .then((response) =>
-      TokenResponse.fromJson(
-          jsonDecode(response.body), response.statusCode));
+  try {
+    return http
+        .post(config.tokenUrl,
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8'
+            },
+            body: TokenRequest.toJson(request))
+        .then((response) => response.statusCode == 200
+            ? TokenResponse.fromJson(
+                jsonDecode(response.body), response.statusCode)
+            : TokenResponse(status: response.statusCode));
+  } catch (exception) {
+    return TokenResponse(connectionException: true);
+  }
 }
 
 Future<bool> validateAccessToken({AppConfig config, String accessToken}) async {
@@ -25,17 +30,22 @@ Future<bool> validateAccessToken({AppConfig config, String accessToken}) async {
 
 Future<TokenResponse> refreshAccessToken(
     {AppConfig config, String refreshToken}) async {
-  var response = await http.post(config.refreshTokenUrl,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8'
-      },
-      body: jsonEncode(<String, String>{config.refreshTokenKey: refreshToken}));
-  var isBodyEmpty = response.body.isEmpty;
-  if (!isBodyEmpty) {
-    return TokenResponse.fromJson(
-        jsonDecode(response.body), response.statusCode);
+  try {
+    var response = await http.post(config.refreshTokenUrl,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body:
+            jsonEncode(<String, String>{config.refreshTokenKey: refreshToken}));
+    var isBodyEmpty = response.body.isEmpty;
+    if (!isBodyEmpty) {
+      return TokenResponse.fromJson(
+          jsonDecode(response.body), response.statusCode);
+    }
+    return TokenResponse(status: response.statusCode);
+  } catch (exception) {
+    return TokenResponse(connectionException: true);
   }
-  return TokenResponse(status: response.statusCode);
 }
 
 class TokenRequest {
@@ -56,8 +66,13 @@ class TokenResponse {
   final String accessToken;
   final String refreshToken;
   final int status;
+  final bool connectionException;
 
-  TokenResponse({this.accessToken, this.refreshToken, this.status});
+  TokenResponse(
+      {this.accessToken,
+      this.refreshToken,
+      this.status,
+      this.connectionException = false});
 
   factory TokenResponse.fromJson(Map<String, dynamic> json, int status) {
     return TokenResponse(
