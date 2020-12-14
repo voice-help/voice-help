@@ -10,8 +10,11 @@ class AppConfig {
   final String refreshTokenKey;
   final String userUrl;
 
+
   final String recordUploadUrl;
   final String allRecordUrl;
+
+  final String recordRatingUrl;
 
 
   AppConfig(
@@ -22,7 +25,8 @@ class AppConfig {
       this.refreshTokenKey,
       this.userUrl,
       this.recordUploadUrl,
-      this.allRecordUrl});
+      this.allRecordUrl,
+      this.recordRatingUrl});
 
   static Future<AppConfig> getConfig() async {
     final content = await rootBundle.loadString('assets/config.json');
@@ -35,6 +39,7 @@ class AppConfig {
         refreshTokenKey: json['refreshTokenKey'],
         userUrl: json['userUrl'],
     recordUploadUrl: json['recordUploadUrl'],
-    allRecordUrl: json['allRecordUrl']);
+    allRecordUrl: json['allRecordUrl'],
+    recordRatingUrl: json['recordRatingUrl']);
   }
 }

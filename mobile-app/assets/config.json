@@ -8,5 +8,6 @@
   "userUrl": "http://192.168.0.178:9090/api/v1/user",
 
   "recordUploadUrl": "http://192.168.0.178:9090/api/v1/record",
-  "allRecordUrl" : "http://192.168.0.178:9090/api/v1/record"
+  "allRecordUrl" : "http://192.168.0.178:9090/api/v1/record",
+  "recordRatingUrl" : "http://192.168.0.178:9090/api/v1/record/rating"
 }

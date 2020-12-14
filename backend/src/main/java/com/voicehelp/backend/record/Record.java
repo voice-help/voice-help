@@ -1,11 +1,13 @@
 package com.voicehelp.backend.record;
 
 import com.voicehelp.backend.record.file.RecordFile;
+import com.voicehelp.backend.record.rating.Rating;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 @Entity
@@ -28,6 +30,13 @@ public class Record {
     @Column(name = "create_user")
     private String createBy;
 
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JoinColumn(name = "record_id")
+    private List<Rating> ratings;
+
     @Column(name = "create_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
@@ -45,6 +54,10 @@ public class Record {
         this.recordName = recordName;
         this.createBy = createBy;
         this.createDate = new Date(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
+    }
+
+    public void addRating(Rating rating) {
+        ratings.add(rating);
     }
 
     public String getRecordId() {

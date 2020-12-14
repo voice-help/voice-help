@@ -6,8 +6,8 @@ import com.voicehelp.backend.security.token.model.KeycloakTokenRefreshDto;
 import com.voicehelp.backend.security.token.model.UserTokenDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import javax.annotation.security.RolesAllowed;
 
 @RestController
 @RequestMapping("/api/v1/token")
@@ -33,7 +33,7 @@ public class TokenController {
     }
 
     @RequestMapping(value = "/validate", method = RequestMethod.POST)
-    @RolesAllowed("user")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> validateToken() {
         return new ResponseEntity<>(HttpStatus.OK);
     }

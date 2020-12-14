@@ -3,18 +3,22 @@ package com.voicehelp.backend.record;
 import com.voicehelp.backend.record.dto.request.CreateRecordDTO;
 import com.voicehelp.backend.record.dto.response.GetRecordCollectionDTO;
 import com.voicehelp.backend.record.dto.response.GetRecordDTO;
+import com.voicehelp.backend.record.rating.dto.request.CreateRatingDTO;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.Principal;
 import java.util.Objects;
 import java.util.Optional;
@@ -30,7 +34,7 @@ public class RecordController {
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @RolesAllowed("user")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> postRecord(
             @RequestPart("file") MultipartFile file,
             @RequestParam("name") String recordName,
@@ -64,7 +68,7 @@ public class RecordController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}/file")
     @ResponseBody
-    @RolesAllowed("user")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getRecordFileByRecordId(@PathVariable("id") String recordId, HttpServletRequest request) throws IOException {
         File recordFile = recordService.getRecordFileByRecordId(recordId);
         HttpHeaders headers = new HttpHeaders();
@@ -88,6 +92,12 @@ public class RecordController {
                 .body(inputStreamResource);
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/rating")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> postRating(@RequestBody CreateRatingDTO ratingDTO, Principal principal) {
+        recordService.createRating(ratingDTO, principal.getName());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
     private static Sort.Direction sortDirectionFromName(Optional<String> direction) {
         return direction.filter(item -> item.equals("desc"))//

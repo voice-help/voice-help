@@ -1,9 +1,12 @@
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:voicehelp/common/constants.dart';
 import 'package:voicehelp/config.dart';
+import 'package:http/http.dart' as http;
+
 
 Future<Response> createRecord(CreateRecordRequest createRecordRequest) async {
   var appConfig = await AppConfig.getConfig();
@@ -59,8 +62,24 @@ Future<Response> downloadRecordFile(String recordId) async {
       headers: <String, String>{'Authorization': 'Bearer $accessToken'}));
   var recordPathDir = await getExternalStorageDirectory();
   var recordPath = recordPathDir.path + '/' + recordId + ".aac";
-  var response = await dio.download(appConfig.allRecordUrl + "/" + recordId + "/file", recordPath);
+  var response = await dio.download(
+      appConfig.allRecordUrl + "/" + recordId + "/file", recordPath);
   return response;
+}
+
+Future<http.Response> createRating(CreateRecordRating dto) async{
+  var appConfig = await AppConfig.getConfig();
+
+  var preferencesFuture = await SharedPreferences.getInstance();
+  var accessToken = preferencesFuture.get(appConfig.accessTokenKey);
+
+     var post = await http
+      .post(appConfig.recordRatingUrl,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $accessToken'
+      },
+      body: jsonEncode(dto.toJson()));
 }
 
 String _resolveUrlParameters(String url, Map<String, String> parameters) {
@@ -79,11 +98,14 @@ class RecordResponse {
   final String _recordId;
   final String _recordName;
   final String _recordFileId;
+  final double _recordRating;
 
-  RecordResponse(this._recordId, this._recordName, this._recordFileId);
+  RecordResponse(
+      this._recordId, this._recordName, this._recordRating, this._recordFileId);
 
   static RecordResponse fromJson(Map<String, dynamic> json) {
-    return RecordResponse(json['id'], json['name'], json['file']['id']);
+    return RecordResponse(
+        json['id'], json['name'], json['rating'], json['file']['id']);
   }
 
   String get recordFileId => _recordFileId;
@@ -91,6 +113,8 @@ class RecordResponse {
   String get recordName => _recordName;
 
   String get recordId => _recordId;
+
+  double get recordRating => _recordRating;
 }
 
 class CreateRecordRequest {
@@ -117,4 +141,20 @@ class CreateRecordFileRequest {
     content['extension'] = this._extension;
     return content;
   }
+}
+
+class CreateRecordRating{
+  final String _recordId;
+  final int _rating;
+
+  CreateRecordRating(this._recordId, this._rating);
+
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> content = new Map<String, dynamic>();
+    content['recordId'] = this._recordId;
+    content['rating'] = this._rating;
+    return content;
+  }
+
 }
