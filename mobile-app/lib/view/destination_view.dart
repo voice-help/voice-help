@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:voicehelp/view/home_view.dart';
 import 'package:voicehelp/view/record_view.dart';
+import 'package:voicehelp/view/user_view.dart';
 
 final List<Destination> destinations = [
   Destination('Home', Icons.home, HomeView()),
   Destination('Record', Icons.keyboard_voice, RecordView()),
-  Destination('User', Icons.person, Text('user'))
+  Destination('User', Icons.person, UserView())
 ];
 
 class Destination {

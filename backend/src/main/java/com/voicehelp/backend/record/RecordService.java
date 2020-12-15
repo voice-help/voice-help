@@ -7,6 +7,8 @@ import com.voicehelp.backend.record.exception.RecordNotFoundException;
 import com.voicehelp.backend.record.file.RecordFile;
 import com.voicehelp.backend.record.file.RecordFileRepository;
 import com.voicehelp.backend.record.file.dto.request.CreateRecordFileDTO;
+import com.voicehelp.backend.record.rating.Rating;
+import com.voicehelp.backend.record.rating.dto.request.CreateRatingDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -56,17 +58,23 @@ public class RecordService {
     }
 
     public GetRecordDTO getRecordById(String recordId) {
-        Optional<Record> record = recordRepository.findByRecordId(recordId);
-        return record.map(GetRecordDTO::new)
-                .orElseThrow(IllegalArgumentException::new);
+        Optional<Record> recordOptional = recordRepository.findByRecordId(recordId);
+        Record record = recordOptional.orElseThrow(IllegalArgumentException::new);
+
+        return new GetRecordDTO(record, getRecordRatingByRecordId(recordId));
     }
 
     public GetRecordCollectionDTO getAllRecords(int page, int size, Sort sort) {
         Page<Record> recordPage = recordRepository.findAll(PageRequest.of(page, size, sort));
         List<GetRecordDTO> records = recordPage.get()//
-                .map(GetRecordDTO::new)//
+                .map((record) -> new GetRecordDTO(record, getRecordRatingByRecordId(record.getRecordId())))//
                 .collect(Collectors.toList());
         return new GetRecordCollectionDTO(records);
+    }
+
+    public Double getRecordRatingByRecordId(String recordId){
+        Optional<Double> recordRatingOptional = recordRepository.getRecordAverageRatingByRecordId(recordId);
+        return recordRatingOptional.orElse(0.0);
     }
 
     public File getRecordFileByRecordId(String recordId) {
@@ -75,6 +83,18 @@ public class RecordService {
         Path recordDirPath = Paths.get("/tmp", STORAGE_DIR);
         Path recordFilePath = Paths.get(recordDirPath.toString(), fileName);
         return recordFilePath.toFile();
+    }
+
+    public void createRating(CreateRatingDTO ratingDTO, String userName) {
+        Optional<Record> recordOptional = recordRepository.findByRecordId(ratingDTO.getRecordId());
+        Record record = recordOptional.orElseThrow(RecordNotFoundException::new);
+        Rating rating = new Rating(record, ratingDTO.getRating(), userName);
+        record.getRatings().stream()//
+                .filter(r -> r.getRecordId().equals(r.getRecordId()) && r.getCreateBy().equals(userName))//
+                .findAny()//
+                .ifPresent(record::removeRating);
+        record.addRating(rating);
+        recordRepository.save(record);
     }
 
     private String generateFileName() {

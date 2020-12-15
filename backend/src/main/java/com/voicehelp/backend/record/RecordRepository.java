@@ -14,4 +14,9 @@ public interface RecordRepository extends PagingAndSortingRepository<Record, Str
             "        LEFT JOIN record_file AS rf ON rf.file_id = record.file_id" +
             "        WHERE record.record_id = :recordId", nativeQuery = true)
     Optional<String> findRecordFileNameByRecordId(String recordId);
+
+    @Query(value = "SELECT AVG(record_rating.rate)" +
+            " FROM record_rating" +
+            " WHERE record_rating.record_id = :recordId", nativeQuery = true)
+    Optional<Double> getRecordAverageRatingByRecordId(String recordId);
 }

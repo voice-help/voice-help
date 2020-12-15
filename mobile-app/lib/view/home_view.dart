@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:voicehelp/client/record_client.dart';
+import 'package:voicehelp/component/rating_filter.dart';
 import 'package:voicehelp/component/record_grid.dart';
 import 'package:voicehelp/component/record_player.dart';
 import 'package:voicehelp/screen/app_screen.dart';
@@ -15,39 +16,51 @@ class _HomeViewState extends State<HomeView> {
   RecordPlayer _recordPlayer;
 
   List<RecordResponse> _records = List();
-
+  int _currentFilter = 0;
+  bool loading = true;
 
   _HomeViewState() {
     _recordPlayer = RecordPlayer(
         this._getNextRecord, this._getPreviousRecord, this._onRecordChange);
-    reloadRecords();
+    reloadRecords(0);
   }
 
   @override
   Widget build(BuildContext context) {
     return AppScreenContainer(
-      child: _records.length != 0
+      child: !loading
           ? RefreshIndicator(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  RatingFilter((filter) {
+                    setState(() {
+                      loading = true;
+                    });
+                    return reloadRecords(filter);
+                  }),
                   new Expanded(
                       child: RecordGrid(_records, this._onRecordSelected,
                           this._recordPlayer.currentRecord)),
                   _recordPlayer
                 ],
               ),
-              onRefresh: this.reloadRecords,
-            )
+              onRefresh: () => reloadRecords(_currentFilter))
           : Center(
               child: CircularProgressIndicator(backgroundColor: Colors.black)),
     );
   }
 
-  Future<void> reloadRecords() async {
-    var records = await getRecords();
+  Future<void> reloadRecords(int filter) async {
+    List<RecordResponse> records = await getRecords();
+    if (filter != null) {
+      records =
+          records.where((record) => record.recordRating >= filter).toList();
+    }
+    _currentFilter = filter;
     setState(() {
       _records = records;
+      loading = false;
     });
   }
 
@@ -56,7 +69,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   RecordResponse _getNextRecord() {
-    var nextRecordIndex = _records.indexOf(this._recordPlayer.currentRecord) + 1;
+    var nextRecordIndex =
+        _records.indexOf(this._recordPlayer.currentRecord) + 1;
     if (nextRecordIndex < _records.length) {
       return _records[nextRecordIndex];
     }
@@ -64,8 +78,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   RecordResponse _getPreviousRecord() {
-
-    var previousRecordIndex = _records.indexOf(this._recordPlayer.currentRecord) - 1;
+    var previousRecordIndex =
+        _records.indexOf(this._recordPlayer.currentRecord) - 1;
     if (previousRecordIndex >= 0) {
       return _records[previousRecordIndex];
     }
@@ -74,7 +88,6 @@ class _HomeViewState extends State<HomeView> {
 
   //
   void _onRecordChange(RecordResponse record) {
-
     var recordExists = _records.contains(record);
     if (!recordExists) {
       Scaffold.of(context).showSnackBar(
