@@ -79,4 +79,12 @@ public class Record {
     public Date getCreateDate() {
         return createDate;
     }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void removeRating(Rating rating){
+        ratings.remove(rating);
+    }
 }

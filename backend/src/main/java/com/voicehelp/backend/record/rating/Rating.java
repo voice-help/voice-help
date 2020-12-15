@@ -43,4 +43,12 @@ public class Rating {
         this.createDate = new Date(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
     }
 
+
+    public String getRecordId() {
+        return record.getRecordId();
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
 }

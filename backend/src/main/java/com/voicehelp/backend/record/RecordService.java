@@ -89,6 +89,10 @@ public class RecordService {
         Optional<Record> recordOptional = recordRepository.findByRecordId(ratingDTO.getRecordId());
         Record record = recordOptional.orElseThrow(RecordNotFoundException::new);
         Rating rating = new Rating(record, ratingDTO.getRating(), userName);
+        record.getRatings().stream()//
+                .filter(r -> r.getRecordId().equals(r.getRecordId()) && r.getCreateBy().equals(userName))//
+                .findAny()//
+                .ifPresent(record::removeRating);
         record.addRating(rating);
         recordRepository.save(record);
     }
