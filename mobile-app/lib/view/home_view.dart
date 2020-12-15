@@ -22,7 +22,7 @@ class _HomeViewState extends State<HomeView> {
   _HomeViewState() {
     _recordPlayer = RecordPlayer(
         this._getNextRecord, this._getPreviousRecord, this._onRecordChange);
-    reloadRecords(0);
+    reloadRecords(null);
   }
 
   @override
@@ -86,7 +86,7 @@ class _HomeViewState extends State<HomeView> {
     return null;
   }
 
-  //
+  //final
   void _onRecordChange(RecordResponse record) {
     var recordExists = _records.contains(record);
     if (!recordExists) {

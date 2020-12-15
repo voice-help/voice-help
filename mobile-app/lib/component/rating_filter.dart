@@ -28,7 +28,7 @@ class RatingFilterState extends State<RatingFilter> {
           _isFiltering = true;
         })
       },
-      child: Text("Add filter"),
+      child: Text("Open filter"),
     );
   }
 

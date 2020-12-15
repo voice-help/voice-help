@@ -4,16 +4,17 @@ import 'package:voicehelp/client/record_client.dart';
 import 'package:voicehelp/service/record_service.dart';
 
 class RecordPlayer extends StatefulWidget {
-  final RecordPlayerState state;
+  RecordPlayerState state;
+   final RecordResponse Function() _getNextRecord;
+   final RecordResponse Function() _getPreviousRecord;
+   final void Function(RecordResponse) _recordChangedCallback;
+  RecordPlayer(this._getNextRecord, this._getPreviousRecord, this._recordChangedCallback) :
+  state = new RecordPlayerState(_getNextRecord, _getPreviousRecord, _recordChangedCallback);
 
-  RecordPlayer(
-      RecordResponse Function() _getNextRecord,
-      RecordResponse Function() _getPreviousRecord,
-      void Function(RecordResponse) _recordChangedCallback)
-      : state = RecordPlayerState(
-            _getNextRecord, _getPreviousRecord, _recordChangedCallback);
 
-  RecordPlayerState createState() => state;
+  RecordPlayerState createState(){
+    return this.state = new RecordPlayerState(this._getNextRecord, this._getPreviousRecord, this._recordChangedCallback);
+  }
 
   void playRecord(RecordResponse record) => state.playRecord(record);
 

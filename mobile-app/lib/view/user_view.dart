@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:voicehelp/screen/app_screen.dart';
+import 'package:voicehelp/screen/login.screen.dart';
+import 'package:voicehelp/service/user_service.dart';
 
 class UserView extends StatelessWidget {
   @override
@@ -16,7 +18,13 @@ class UserView extends StatelessWidget {
         child: Column(
           children: [
             MaterialButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  logout(),
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LoginScreen()))
+                },
                 child: Row(
                   children: [
                     Icon(
