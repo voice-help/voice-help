@@ -75,6 +75,14 @@ Future<Response> signUp(
       successfully: false, failureMessage: 'Cannot sign up - please try later');
 }
 
+Future<void> logout() async{
+  var appConfig = await AppConfig.getConfig();
+  var preferencesFuture = SharedPreferences.getInstance();
+  var preferences = await preferencesFuture;
+  await preferences.remove(appConfig.accessTokenKey);
+  await preferences.remove(appConfig.refreshTokenKey);
+}
+
 class Response {
   final bool successfully;
   final String failureMessage;
