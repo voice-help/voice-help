@@ -15,7 +15,8 @@ The android app lets you:
 
 * [Flutter](<https://flutter.dev/>)
 * [Dart](<https://dart.dev/>)
-
+* [Spring](<https://spring.io/projects/spring-framework/>)
+* Java
 
 ## Authors
 
