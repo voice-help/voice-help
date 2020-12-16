@@ -1,6 +1,6 @@
 # VOICE HELP
 [![Build Status](https://travis-ci.com/voice-help/voice-help.svg?token=uGVQ9nqGWJWxx9e13NzB&branch=main)](https://travis-ci.com/voice-help/voice-help)
-TEST README
+
 
 VOICE HELP is an android platform based aplication which purpose is to relax its users by variety of sounds played through an app
 
