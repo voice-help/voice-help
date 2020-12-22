@@ -25,6 +25,16 @@ The android app lets you:
 * **Marcin Komar**
 
 
+## Instalacja
+
+
+1. Pobierz app-release.apk z repozytorium github na swój smartphone.
+2. W ustawieniach androida zezwól na instalację aplikacji z nieznanego źródła jeżeli wcześniej tego nie zrobiłeś.
+3. Uruchom pobrany plik.
+4. Po pomyślnej instalacji aplikacji wymagane jest nadanie jej uprawnień do mikrofonu oraz dostępu do plików. Możesz to zrobić w menedżerze uprawnień. (https://support.google.com/android/answer/9431959?hl=pl)
+5. Gotowe, teraz możesz korzystać z aplikacji.
+
+
 ## License
 
 This project is licensed under the MIT License.
