@@ -1,1 +1,0 @@
-## This folder contains video description and presentation of our project.
